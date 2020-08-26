@@ -45,6 +45,10 @@ public class PathFinder : MonoBehaviour {
 
     [Header("Alternate keys:")]
     public List<AlternateKey> altKeys;
+    
+    
+    public Mesh node_mesh;
+    public Material node_material;
 
     public void Awake()
     {
@@ -353,7 +357,9 @@ public class PathFinder : MonoBehaviour {
             }
         }
         if (iterations < 4000)
-            Debug.Log("Path not found");
+        {
+            Debug.Log(string.Format("Path not found. Number of iterations: <color=yellow>{0}</color>", iterations.ToString()));
+        }
         else
             Debug.Log("Iterations overload");
     }
@@ -377,6 +383,8 @@ public class PathFinder : MonoBehaviour {
     
     float GetDistance(Node n1, Node n2)
     {
+        float result = Vector3.Distance(n1.transform.position, n2.transform.position);
+        Debug.Log("Distance is " + result.ToString("f"));
         return Vector3.Distance(n1.transform.position, n2.transform.position);
     }
 

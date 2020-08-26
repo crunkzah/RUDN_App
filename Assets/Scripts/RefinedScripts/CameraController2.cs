@@ -155,9 +155,73 @@ public class CameraController2 : MonoBehaviour
         //     SetFloor(floor);
         // }
     }
+    
+    Vector3 startPinchPos1;
+    Vector3 startPinchPos2;
+     
+    void FullTouchInput()
+    {
+        List<Touch> touches = InputHelper.GetTouches();
+        
+        // if(IsPointerOverUIObject())
+        // {
+        //     if(touches.Count > 0)
+        //     {
+        //         wasUIClicked = true;
+        //     }
+        // }
 
-	void Update()
-	{
+        
+       
+        // if(!wasUIClicked && Input.GetMouseButtonDown(0))
+        if(touches[0].phase == TouchPhase.Began)
+        {
+
+            touchDownPos = cam.ScreenToViewportPoint(Input.mousePosition);
+            cameraTouchDownPos = transform.position;
+
+            nextTimeToSwipe = Time.time + timeToSwipe;
+        }
+        // if(!wasUIClicked && Input.GetMouseButton(0))
+        if(touches[0].phase == TouchPhase.Moved)
+        {
+
+            Vector3 dir = touchDownPos - cam.ScreenToViewportPoint(Input.mousePosition);
+            dir.z = dir.y;
+            dir.y = 0;
+
+            Vector3 newPosition = cameraTouchDownPos + dir * moveScale;
+            newPosition.x = Mathf.Clamp(newPosition.x, coordXLimit.x, coordXLimit.y);
+            newPosition.z = Mathf.Clamp(newPosition.z, coordZLimit.x, coordZLimit.y);
+
+            transform.position = newPosition;
+ //           UnityEngine.UI.Image img;
+//            img.color
+            
+            targetPosition = newPosition;
+        }
+        else
+            prevTouchPos = Vector3.zero;
+
+        //if(Input.GetMouseButtonUp(0))
+        if(touches[0].phase == TouchPhase.Ended)
+        {
+            wasUIClicked = false;
+
+            if(Time.time < nextTimeToSwipe)
+            {
+                RaycastToLabel();
+            }
+
+        }
+       
+
+
+        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref dampVector, smoothTime);
+    }
+    
+    void FullKeyboardInput()
+    {
         if(IsPointerOverUIObject())
         {
             if(Input.GetMouseButtonDown(0))
@@ -213,13 +277,11 @@ public class CameraController2 : MonoBehaviour
 
         }
 
-#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBGL
+// #if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBGL
 		KeyboardInput();
-#endif
+// #endif
 
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref dampVector, smoothTime);
-        //transform.position = Vector3.SmoothDamp(transform.position, GetZoomedTargetPosition(), ref dampVector, smoothTime);
-        
     }
 
 	// (Marat) 	Shooting ray from camera, hoping to touch labels
@@ -244,6 +306,12 @@ public class CameraController2 : MonoBehaviour
                 //targetPos = node.labelPos + selectNodeOffset;
             }
         }
+    }
+
+	void Update()
+	{
+        FullKeyboardInput();
+        //FullTouchInput();
     }
 
     public void SetMiddlePoint(Vector3 p1, Vector3 p2)

@@ -78,7 +78,7 @@ public class RectangleCreator : MonoBehaviour {
 
 	public void DrawRect2(Vector3 rectPoint2)
 	{
-		fromMesh.GetComponent<Renderer>().enabled = true;
+		toMesh.GetComponent<Renderer>().enabled = true;
 		toMesh.mesh = CreateRectangle(rectPoint2, rectAboveGround);
 	}
 

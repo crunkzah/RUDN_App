@@ -84,8 +84,9 @@ public class Node : MonoBehaviour
                 Debug.DrawLine(this.worldPos, neighbours[i].worldPos, Color.yellow, 0, true);
             }
         }
-        if(isRoom)
-            UnityEditor.Handles.Label(transform.position, this.nodeKey);
+        
+        UnityEditor.Handles.Label(transform.position, this.nodeKey);
+        
     }
     #endif
 

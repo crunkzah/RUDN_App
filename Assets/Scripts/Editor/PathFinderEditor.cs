@@ -3,6 +3,7 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 
 
 [CustomEditor(typeof(PathFinder))]
@@ -62,10 +63,17 @@ public class PathFinderEditor : Editor {
             foreach (Node node in nodes)
             {
 
+                MeshFilter mf = node.GetComponent<MeshFilter>();
+                if(mf == null)
+                {
+                    mf = node.gameObject.AddComponent<MeshFilter>();
+                    mf.sharedMesh = pf.node_mesh;
+                }
                 Renderer renderer = node.GetComponent<Renderer>();
                 if(renderer == null)
                 {
-                    node.gameObject.AddComponent<MeshRenderer>();
+                    renderer = node.gameObject.AddComponent<MeshRenderer>();
+                    renderer.sharedMaterial = pf.node_material;
                 }
             }
         }

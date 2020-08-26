@@ -44,6 +44,7 @@ public class WinterModeButton : MonoBehaviour {
 		img_checkmark.SetActive(winterMode);
 		ChangeNode(winterMode);
 		PathFinder.singleton.FindPathFromInputFields();
+		TitlePanel.Singleton().ShowWinterModeTitle(winterMode);
 	}
 
 	public List<Node> yard_nonWinterMode_neighbours = new List<Node>();

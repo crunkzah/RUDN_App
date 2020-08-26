@@ -43,6 +43,8 @@ public class TextTranslator : MonoBehaviour {
 			all_instances[i].TranslateString();
 	}
 
+	static string floorLabelObjName = "FloorLabel";
+
 	public void TranslateString()
 	{
 		
@@ -52,12 +54,18 @@ public class TextTranslator : MonoBehaviour {
 			Debug.LogError("Translatable_string has problems on " + this.gameObject.name);
 			return;
 		}
+		
 
 		TextMeshProUGUI tmp_gui = GetComponent<TextMeshProUGUI>();
 		if(tmp_gui != null)
 		{
 			tmp_gui.SetText(translatable_string.strings[lang_index]);
             tmp_gui.ForceMeshUpdate(true);
+			
+			if(this.gameObject.name.Equals(floorLabelObjName))
+			{
+				tmp_gui.SetText(tmp_gui.text + " " + SelectionManager2.singleton.currentFloor.ToString());
+			}
 		}
 		else
 		{
