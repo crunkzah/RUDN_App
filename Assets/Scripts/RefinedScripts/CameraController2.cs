@@ -310,8 +310,8 @@ public class CameraController2 : MonoBehaviour
 
 	void Update()
 	{
-        FullKeyboardInput();
-        //FullTouchInput();
+        //FullKeyboardInput();
+        FullTouchInput();
     }
 
     public void SetMiddlePoint(Vector3 p1, Vector3 p2)
